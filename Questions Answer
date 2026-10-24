@@ -1,0 +1,100 @@
+LEAP Program Portfolio Report
+
+Executive Summary
+
+This report analyzes baseline clinical and biochemical factors associated with quantitative diabetes disease 
+progression over a one-year follow-up period in a sample of N=442 patients. 
+Using exploratory data analysis, pairwise Pearson correlation coefficients, 
+multiple linear regression, and diagnostic goodness-of-fit evaluations, we assess the primary predictive indicators of the disease. 
+Body Mass Index (bmi), Blood Pressure (bp), and Serum Triglycerides (s5) emerge as the most impactful baseline prognostic factors.
+Crucial methodological parameters are also examined, including the distinction between statistical and clinical significance, 
+addressing severe multicollinearity among laboratory serum markers,
+and acknowledging the limitations of drawing causal inferences from observational data.
+
+Question 1: Understand and Prepare the Data
+
+The dataset contains 442 patient observations with 10 initial independent variables and 1 continuous outcome variable measuring
+quantitative disease progression one year post-baseline (25≤Y≤346). Demographic predictors include age (age) and sex (sex), 
+which is numerically coded (1=Male, 2=Female). Physical measurements consist of Body Mass Index (bmi, in kg/m 
+2) and mean arterial blood pressure (bp, in mm Hg). Additionally, six serum biochemical measurements are included: 
+total serum cholesterol (s1), low-density lipoproteins / LDL (s2), high-density lipoproteins / HDL (s3),
+total cholesterol to HDL ratio (s4),log serum triglycerides (s5), and blood glucose level (s6).   
+During data integrity checks, 0 missing values (NA) and 0 duplicate rows were confirmed across all 442 observations. 
+The sex variable was converted from numeric codes (1,2) into a categorical factor with levels Male and Female, 
+ensuring R treats it as a qualitative variable with dummy coding rather than a continuous numeric scale. 
+From an ethical and clinical perspective, responsible health data handling is essential: statistical models 
+serve as correlation-seeking tools and must not be misinterpreted as automated diagnostic systems or definitive proof of causality 
+without expert medical evaluation.
+
+Question 2: Explore the Data
+
+Descriptive statistical analysis captures the central tendency and dispersion of key variables. 
+The outcome variable (progression) exhibits a mean of 152.14, a standard deviation of σ=77.09, a median of 140.50, 
+an interquartile range of IQR=102.00, and a range spanning 25.00 to 346.00. Body Mass Index (bmi) presents a mean of 26.38 kg/m 
+2(σ=4.42, median 25.75, IQR=5.38, minimum 18.00, maximum 42.20), 
+representing a broad clinical cross-section from underweight to severely obese patients. 
+Blood pressure (bp) records a mean of 94.64 mm Hg (σ=13.83, median 92.00, IQR=19.00, minimum 62.00, maximum 133.00), 
+while patient age ranges from 19.00 to 79.00 years with a mean of 48.52 years (σ=13.11).   
+Morphologically, the distribution of disease progression (progression) displays mild right skewness, 
+whereas bmi follows an approximately normal distribution with slight right-skewing. 
+Visual inspection via boxplots confirms the absence of extreme mathematical outliers requiring trimming or winsorization, 
+allowing for the retention of the full sample in subsequent modeling.   
+
+Question 3: Investigate Relationships
+
+Bivariate Pearson correlation coefficients (r) reveal the strongest linear associations with disease progression:   
+bmi vs. progression: r=0.586 (Strong positive linear association)   
+s5 (Triglycerides) vs. progression: r=0.566 (Strong positive linear association)   
+bp vs. progression: r=0.441 (Moderate positive linear association)   
+s4 vs. progression: r=0.430 (Moderate positive association)   
+s3 (HDL) vs. progression: r=−0.395 (Moderate negative association)   
+age vs. progression: r=0.188 (Weak positive association)   
+Simultaneously, severe collinearity is present among laboratory serum metrics: total cholesterol (s1) and LDL (s2) 
+share a correlation coefficient of r=0.897, while HDL (s3) and ratio s4 display r=−0.738. 
+Including these variables concurrently in a multiple regression model creates a risk of inflated standard errors and 
+parameter estimate instability.   
+
+Question 4: Build and Interpret Regression Models
+
+The baseline simple linear regression model using Body Mass Index as the single predictor is formulated as:   
+progression=−117.08+10.21⋅(bmi)+ϵ
+The intercept ( 
+β=−117.08,p<0.001) lacks practical clinical meaning as it corresponds to a non-physiological BMI of zero. The slope ( 
+β=10.21,p<0.001) indicates that for every 1 kg/m increase in BMI, expected 1-year disease progression increases by 10.21 units. 
+The coefficient of determination (R =0.344) shows that BMI alone explains 34.4% of total variance in disease progression.   
+Next, a parsimonious multiple regression model was built using the three most impactful clinical indicators (bmi, bp, s5):   
+progression=−155.22+7.87⋅(bmi)+0.98⋅(bp)+37.52⋅(s5)+ϵ
+Under the ceteris paribus assumption (holding all other predictors constant):   
+Each 1 kg/m increase in BMI increases expected progression by 7.87 units (p<0.001).   
+Each 1 mm Hg increase in blood pressure increases expected progression by 0.98 units (p<0.001).   
+Each 1 unit increase in log triglycerides increases expected progression by 37.52 units (p<0.001).   
+Adjusted R reaches 0.477 (F=134.7,p<0.001), demonstrating that the combined model explains 47.7% of variance, 
+outperforming the simple model. 
+
+Question 5: Evaluate the Analysis
+
+Evaluating multicollinearity using Variance Inflation Factors (VIF) in the full 10-variable model reveals extreme 
+inflation among serum markers:
+s1 (VIF=59.20), s2 (VIF=39.19), s3 (VIF=15.40), and s5 (VIF=10.08). 
+In contrast, the parsimonious 3-variable model (bmi, bp, s5) keeps VIF values below 1.53 across all predictors, 
+ensuring stable coefficient estimation.   
+Diagnostic residual plots (Residuals vs. Fitted) for the model confirm assumptions of linearity and homoscedasticity, 
+showing random point dispersion around zero. The Normal Q-Q plot verifies residual normality. 
+95% confidence intervals for the model coefficients are:   
+bmi: [6.45,9.29]   
+bp: [0.64,1.32]   
+s5: [28.02,47.01]   
+Because none of these intervals cross zero, we confirm strong statistical evidence of positive associations.   
+
+Question 6: Draw Appropriate Conclusions
+
+The core findings demonstrate that baseline BMI, Blood Pressure, and Serum Triglycerides are the single most 
+important clinical indicators of 1-year diabetes progression. 
+A concise 3-variable model efficiently captures 47.7% of disease progression variance while maintaining numerical stability and 
+avoiding multicollinearity.   
+However, key methodological limitations apply. The dataset is observational; regression coefficients imply correlation rather than 
+causation. 
+Mechanically reducing a patient's BMI does not guarantee a directly proportional decrease in 
+disease progression without evidence from prospective clinical trials.
+Furthermore, omitted variable bias remains possible, as unmeasured behavioral or biological factors (such as dietary habits, 
+physical exercise, medication adherence, and genetic markers) were absent from the dataset.
